@@ -67,12 +67,13 @@ echo -e "Select multiple tools for scan
    #  1. Nmap                          #
    #  2. Dirsearch                     #
    #  3. Nikto                         #
-   #  4. Sublister                     #
-   #  5. Gobuster                      #
-   #  6. Nuclei                        #
-   #  7. Wpscan                        #
-   #  8. Hamster                       #
-   #  9. Sqlmap                        #
+   #  4. Amass                         #
+   #  5. Sublister                     #
+   #  6. Gobuster                      #
+   #  7. Nuclei                        #
+   #  8. Wpscan                        #
+   #  9. Hamster                       #
+   #  10. Sqlmap                        #
    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 "
 
@@ -80,13 +81,14 @@ IFS=, read -p "Selected tools (comma separated): " -a tools
 
 for tool in "${tools[@]}"; do
    case $tool in
-      1) nmap -sC -sV -p- -T4 -n -v $IP -oN nmap ;;
-      2) sudo dirsearch -u $IP -q -r -e php,js,db,xml,html -i 200-299,300-399,500-599 -format simple -o dirsearch;;
-      3) nikto -url $IP -no404 -C all -Format txt -o nikto;;
-      4) sublist3r -d $IP -o sublister;;
-      5) gobuster dir $IP -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -q -t 3 -r -x php,js,db,xml,html -o gobuster;;
-      6) sudo nuclei -u $IP;;
-      7) wpscan --url $IP;;
+      1) sudo nmap -A -sC -sV -p- -v $IP -oN $IP_"nmap" ;;
+      2) sudo dirsearch -u $IP -q -r -e php,js,db,xml,html -i 200-299,300-399,500-599 -format simple -o $IP_"dirsearch";;
+      3) nikto -url $IP -no404 -C all -Format txt -o $IP_"nikto";;
+      4) amass enum -d $IP.com > $IP_"amass";;
+      5) sublist3r -d $IP -o $IP_"sublister";;
+      6) gobuster dir $IP -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -q -t 3 -r -x php,js,db,xml,html -o $IP_"gobuster";;
+      7) nuclei -u $IP;;
+      8) wpscan --url $IP;;
 
       *)
 
